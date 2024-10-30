@@ -38,7 +38,7 @@ import joblib  # for loading the trained model
 diabetes_model = joblib.load("diabetes_model.pkl")
 
 # Load your hospital dataset
-df_hospitals = pd.read_csv("your_hospital_data.csv")
+df_hospitals = pd.read_csv("Hospitals.csv")
 
 # Function for diabetes prediction
 def predict_diabetes(input_data):
@@ -63,14 +63,14 @@ if st.button("Predict Diabetes"):
 
 # Hospital Recommendation Section
 st.header("Hospital Recommendation")
-location = st.selectbox("Select Your Location", df_hospitals['Location'].unique())
-specialization = st.selectbox("Select Specialization", df_hospitals['Specialization'].unique())
+county_location = st.selectbox("Select Your Location", df_hospitals['COUNTY'].unique())
+hospital_code = st.selectbox("Select NHIF Hospital Code ", df_hospitals['NHIF HOSPITAL CODE'].unique())
 
 # Function to recommend hospitals
-def recommend_hospitals(location, specialization):
+def recommend_hospitals(COUNTY, NHIF HOSPITAL CODE):
     filtered_hospitals = df_hospitals[
-        (df_hospitals['Location'] == location) &
-        (df_hospitals['Specialization'] == specialization)
+        (df_hospitals['COUNTY'] == county_location) &
+        (df_hospitals['NHIF HOSPITAL CODE'] == hospital_code)
     ]
     
     if filtered_hospitals.empty:
