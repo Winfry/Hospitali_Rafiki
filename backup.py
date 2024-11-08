@@ -3,7 +3,7 @@ import pickle
 import pandas as pd
 
 # Load the diabetes model
-model_path = 'diabetes_model.sav'  # Replace with the correct path if necessary
+model_path = 'diabetes_model.pkl'  # Replace with the correct path if necessary
 try:
     loaded_model = pickle.load(open(model_path, 'rb'))
 except FileNotFoundError:
@@ -11,7 +11,7 @@ except FileNotFoundError:
     st.stop()
 
 # Load the hospital dataset
-hospital_data_path = 'hospital_data.csv'  # Replace with the actual path of your hospital dataset
+hospital_data_path = 'Hospitals.csv'  # Replace with the actual path of your hospital dataset
 try:
     hospital_data = pd.read_csv(hospital_data_path)
 except FileNotFoundError:
