@@ -77,9 +77,9 @@ if st.button("Predict"):
         
         if not recommended_hospitals.empty:
             for index, row in recommended_hospitals.iterrows():
-                st.write(f"**{row['Hospital Name']}**")
-                st.write(f"Location: {row['Location']}")
-                st.write(f"Contact: {row['Contact']}")
+                st.write(f"**{row['HOSPITAL_NAME']}**")
+                st.write(f"Location: {row['COUNTY']}")
+                st.write(f"Office: {row['NHIF_OFFICE']}")
                 st.write("---")
         else:
             st.write("No hospitals specializing in diabetes care found in your area.")
