@@ -50,7 +50,7 @@ def recommend_hospitals(COUNTY, NHIF HOSPITAL CODE):
 
 # Recommendation button
 if st.button("Get Recommendations"):
-    recommended_hospitals = recommend_hospitals(location, specialization)
+    recommended_hospitals = recommend_hospitals(county_location, hospital_code)
     st.write(recommended_hospitals)
     
 
