@@ -3,11 +3,19 @@ import pickle
 import pandas as pd
 
 # Load the diabetes model
-model_path = 'diabetes_model.pkl'  # Path to your model
+model_path = 'diabetes_model.pkl'
 try:
     loaded_model = pickle.load(open(model_path, 'rb'))
 except FileNotFoundError:
     st.error("Diabetes model file not found. Please make sure 'diabetes_model.pkl' is in the directory.")
+    st.stop()
+
+# Load hospital data
+hospital_data_path = 'hospitals.csv'  # Path to your hospital dataset
+try:
+    hospitals_df = pd.read_csv(hospital_data_path)
+except FileNotFoundError:
+    st.error("Hospital data file not found. Please ensure 'hospitals.csv' is in the directory.")
     st.stop()
 
 # Title and subtitle
@@ -33,7 +41,7 @@ if st.button("Predict"):
     # If the prediction indicates diabetes
     if prediction[0] == 1:
         st.error("The model suggests that you may have diabetes.")
-        
+
         # Display an educational image about diabetes
         st.image("diabetes_info.jpg", caption="Understanding Diabetes", use_column_width=True)
 
@@ -60,6 +68,21 @@ if st.button("Predict"):
 
         st.write("For more information, check out this [link to diabetes care resources](https://www.diabetes.org/)")
 
+        # Recommend hospitals
+        st.header("Recommended Hospitals for Diabetes Care")
+        
+        # Filter hospitals based on your criteria, e.g., those with a diabetes specialty
+        recommended_hospitals = hospitals_df[hospitals_df['Specialty'].str.contains('Diabetes', case=False, na=False)]
+        
+        if not recommended_hospitals.empty:
+            for index, row in recommended_hospitals.iterrows():
+                st.write(f"**{row['Hospital Name']}**")
+                st.write(f"Location: {row['Location']}")
+                st.write(f"Contact: {row['Contact']}")
+                st.write("---")
+        else:
+            st.write("No hospitals specializing in diabetes care found in your area.")
+
     # If the prediction does not indicate diabetes
     else:
         st.success("Great news! You are not likely to have diabetes according to this prediction.")
@@ -85,5 +108,3 @@ if st.button("Predict"):
             st.write("Engage in regular physical activity, like brisk walking, for at least 30 minutes most days of the week.")
 
         st.write("For more tips on maintaining a healthy lifestyle, check out the resources [here](https://www.cdc.gov/healthyweight/healthy_eating/index.html).")
-
-
