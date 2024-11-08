@@ -16,7 +16,7 @@ def predict_diabetes(input_data):
     return "Diabetic" if prediction[0] == 1 else "Not Diabetic"
 
 # Streamlit UI
-st.title("Dialysis Hospital Recommendation and Diabetes Prediction")
+st.title("Dialysdis Hospital Recommendation and Diabetes Prediction")
 
 # Diabetes Prediction Inputs
 st.header("Diabetes Prediction")
@@ -34,13 +34,13 @@ if st.button("Predict Diabetes"):
 # Hospital Recommendation Section
 st.header("Hospital Recommendation")
 county_location = st.selectbox("Select Your Location", df_hospitals['COUNTY'].unique())
-hospital_code = st.selectbox("Select NHIF Hospital Code ", df_hospitals['NHIF HOSPITAL CODE'].unique())
+hospital_code = st.selectbox("Select NHIF Hospital Code ", df_hospitals['NHIF_HOSPITAL_CODE'].unique())
 
 # Function to recommend hospitals
-def recommend_hospitals(COUNTY, NHIF HOSPITAL CODE):
+def recommend_hospitals(COUNTY, NHIF_HOSPITAL_CODE):
     filtered_hospitals = df_hospitals[
         (df_hospitals['COUNTY'] == county_location) &
-        (df_hospitals['NHIF HOSPITAL CODE'] == hospital_code)
+        (df_hospitals['NHIF_HOSPITAL_CODE'] == hospital_code)
     ]
     
     if filtered_hospitals.empty:
