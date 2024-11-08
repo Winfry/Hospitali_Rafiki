@@ -17,10 +17,12 @@ st.write("Get a quick prediction and learn ways to improve your health!")
 # Collect input data from the user for prediction
 st.header("Please Enter Your Health Information")
 input_data = {
-    "Feature1": st.number_input("Enter value for Feature1", min_value=0.0),
-    "Feature2": st.number_input("Enter value for Feature2", min_value=0.0),
-    "Feature1": st.number_input("Enter value for Feature1", min_value=0.0),
-    "Feature2": st.number_input("Enter value for Feature2", min_value=0.0),
+    "Age": st.number_input("Enter value for Age", min_value=0.0),
+    "Sugar Level": st.number_input("Enter value for Sugar Level", min_value=0.0),
+    "Blood Pressure": st.number_input("Enter value for Blood Pressure", min_value=0.0),
+    "Sodium": st.number_input("Enter value for Sodium", min_value=0.0),
+    "Blood Urea": st.number_input("Enter value for Blood Urea", min_value=0.0),
+    "Haemoglobin": st.number_input("Enter value for Haemoglobin", min_value=0.0),
 }
 
 # Predict diabetes based on the input data
