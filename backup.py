@@ -44,7 +44,7 @@ if st.button("Predict"):
         st.error("The model suggests that you may have diabetes.")
 
         # Display an educational image about diabetes
-        st.image("diabetes_info.jpg", caption="Understanding Diabetes", use_column_width=True)
+        st.image("diab_info.jpg", caption="Understanding Diabetes", use_column_width=True)
 
         # Widgets to provide resources and lifestyle tips
         st.header("Resources for Managing Diabetes")
