@@ -4,18 +4,18 @@ import pandas as pd
 
 # Load the diabetes prediction model
 try:
-    model_path = 'diabetes_model.sav'
+    model_path = 'diabetes_model.pkl'
     loaded_model = pickle.load(open(model_path, 'rb'))
 except FileNotFoundError:
-    st.error("Diabetes model file not found. Please make sure 'diabetes_model.sav' is in the directory.")
+    st.error("Diabetes model file not found. Please make sure 'diabetes_model.pkl' is in the directory.")
     st.stop()
 
 # Load hospital dataset
 try:
-    hospital_data_path = 'hospital_data.csv'  # Adjust the path if needed
+    hospital_data_path = 'Hospitals.csv'  # Adjust the path if needed
     hospital_data = pd.read_csv(hospital_data_path)
 except FileNotFoundError:
-    st.error("Hospital data file not found. Please make sure 'hospital_data.csv' is in the directory.")
+    st.error("Hospital data file not found. Please make sure 'Hospitals.csv' is in the directory.")
     st.stop()
 
 # App Title
