@@ -3,11 +3,11 @@ import pickle
 import pandas as pd
 
 # Load the diabetes model
-model_path = 'diabetes_model.sav'  # Path to your model
+model_path = 'diabetes_model.pkl'  # Path to your model
 try:
     loaded_model = pickle.load(open(model_path, 'rb'))
 except FileNotFoundError:
-    st.error("Diabetes model file not found. Please make sure 'diabetes_model.sav' is in the directory.")
+    st.error("Diabetes model file not found. Please make sure 'diabetes_model.pkl' is in the directory.")
     st.stop()
 
 # Title and subtitle
@@ -19,7 +19,8 @@ st.header("Please Enter Your Health Information")
 input_data = {
     "Feature1": st.number_input("Enter value for Feature1", min_value=0.0),
     "Feature2": st.number_input("Enter value for Feature2", min_value=0.0),
-    # Add more fields as needed for your model's input features
+    "Feature1": st.number_input("Enter value for Feature1", min_value=0.0),
+    "Feature2": st.number_input("Enter value for Feature2", min_value=0.0),
 }
 
 # Predict diabetes based on the input data
