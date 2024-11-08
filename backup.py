@@ -21,6 +21,7 @@ except FileNotFoundError:
 # Title and subtitle
 st.title("Diabetes Prediction and Wellness Guide")
 st.write("Get a quick prediction and learn ways to improve your health!")
+st.image("diabetes.jpg", caption="Understanding Diabetes", use_column_width=True)
 
 # Collect input data from the user for prediction
 st.header("Please Enter Your Health Information")
