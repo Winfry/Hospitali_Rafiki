@@ -73,7 +73,7 @@ if st.button("Predict"):
         st.header("Recommended Hospitals for Diabetes Care")
         
         # Filter hospitals based on your criteria, e.g., those with a diabetes specialty
-        recommended_hospitals = hospitals_df[hospitals_df['Specialty'].str.contains('Diabetes', case=False, na=False)]
+        recommended_hospitals = hospitals_df[hospitals_df['COUNTY'].str.contains('COUNTY', case=False, na=False)]
         
         if not recommended_hospitals.empty:
             for index, row in recommended_hospitals.iterrows():
