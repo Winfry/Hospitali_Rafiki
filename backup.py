@@ -32,6 +32,12 @@ input_data = {
     "Sodium": st.number_input("Enter value for Sodium", min_value=0.0),
     "Blood Urea": st.number_input("Enter value for Blood Urea", min_value=0.0),
     "Haemoglobin": st.number_input("Enter value for Haemoglobin", min_value=0.0),
+    "specific_gravity": st.number_input("Enter value for  Specific Gravity", min_value=0.0),
+    "albumin ": st.number_input("Enter value for Albumin ", min_value=0.0),
+    "blood_glucose_random": st.number_input("Enter value for Blood Glucose Random", min_value=0.0),
+    "serum_creatinine": st.number_input("Enter value for Serum Creatinine", min_value=0.0),
+    "potassium": st.number_input("Enter value for Potassium", min_value=0.0),
+    "white_blood_cell_count": st.number_input("Enter value for White Blood Cell Count", min_value=0.0),
 }
 
 # Predict diabetes based on the input data
