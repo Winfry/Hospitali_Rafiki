@@ -38,8 +38,6 @@ input_data = {
     "potassium": st.number_input("Enter value for Potassium ", min_value=0.0),
     "haemoglobin": st.number_input("Enter value for Haemoglobin ", min_value=0.0),
     "packed_cell_volume": st.number_input("Enter value for Packed Cell Volume ", min_value=0.0),
-    "white_blood_cell_count": st.number_input("Enter value for White Blood Cell Count", min_value=0.0),
-    "red_blood_cell_count": st.number_input("Enter value for Red Blood Cell Count", min_value=0.0),
 }
 
 # Predict diabetes based on the input data
