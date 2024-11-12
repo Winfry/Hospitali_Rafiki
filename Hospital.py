@@ -12,7 +12,7 @@ except FileNotFoundError:
     st.stop()
 
 # Load hospital data
-hospital_data_path = 'hospitals.csv'  # Path to your hospital dataset
+hospital_data_path = 'Hospitals.csv'  # Path to your hospital dataset
 try:
     hospitals_df = pd.read_csv(hospital_data_path)
 except FileNotFoundError:
@@ -21,7 +21,9 @@ except FileNotFoundError:
 
 # Title and description
 st.title("Diabetes Prediction and Hospital Recommendation")
-st.write("Get a quick prediction for diabetes and see hospitals recommended for diabetes care or general check-ups.")
+st.write("Get a quick prediction and learn ways to improve your health! Diabetes is a chronic health condition that affects how the body processes blood sugar (glucose). When unmanaged, high blood sugar levels can lead to severe complications over time, impacting various organs and systems in the body, including the heart, blood vessels, nerves, eyes, and kidneys.By focusing on kidney health in our diabetes prediction and hospital recommendation system, we aim to support early intervention and provide valuable resources for those at risk, helping to prevent severe kidney-related issues.")
+st.image("diabetes.jpg", caption="Understanding Diabetes", use_column_width=True)
+
 
 # Collect input data from the user for prediction
 st.header("Please Enter Your Health Information")
@@ -53,9 +55,13 @@ if st.button("Predict"):
         if prediction_result == 1:
             st.error("The model suggests that you may have diabetes.")
             
+            # Display an educational image about diabetes
+            st.image("diab_info.jpg", caption="Understanding Diabetes", use_column_width=True)
+
+            
             # Display diabetes management resources
-            st.header("Managing Diabetes: Tips and Resources")
-            st.write("If you're diagnosed with diabetes, consider these lifestyle tips:")
+            st.header("Resources for Managing Diabetes")
+            st.write("Here are some tips and resources to help you manage diabetes:")
             if st.checkbox("Diet and Nutrition Tips"):
                 st.write("""
                     - Choose fiber-rich foods like vegetables, fruits, and whole grains.
@@ -101,6 +107,9 @@ if st.button("Predict"):
 
         else:
             st.success("You are not likely to have diabetes according to this prediction.")
+            
+            # Display a healthy lifestyle image
+            st.image("healthy_lifestyle.jpg", caption="Stay Healthy!", use_column_width=True)
 
             # Healthy lifestyle recommendations
             st.header("General Tips for Staying Healthy")
