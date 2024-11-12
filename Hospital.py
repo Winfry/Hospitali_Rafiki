@@ -2,12 +2,12 @@ import streamlit as st
 import pickle
 import pandas as pd
 
-# Load the diabetes model
+# Load the diabetes prediction model
 model_path = 'diabetes_model.pkl'  
 try:
     loaded_model = pickle.load(open(model_path, 'rb'))
 except FileNotFoundError:
-    st.error("Diabetes model file not found. Please make sure 'diabetes_model.pkl' is in the directory.")
+    st.error("Diabetes model file not found. Please ensure 'diabetes_model.pkl' is in the directory.")
     st.stop()
 
 # Load hospital data
@@ -18,30 +18,30 @@ except FileNotFoundError:
     st.error("Hospital data file not found. Please ensure 'hospitals.csv' is in the directory.")
     st.stop()
 
-# Title and subtitle
-st.title("Diabetes Prediction and Wellness Guide")
-st.write("Get a quick prediction and learn ways to improve your health!")
-st.image("diabetes.jpg", caption="Understanding Diabetes", use_column_width=True)
+# Title and description
+st.title("Diabetes Prediction and Hospital Recommendation")
+st.write("Get a quick prediction for diabetes and see hospitals recommended for diabetes care.")
 
 # Collect input data from the user for prediction
 st.header("Please Enter Your Health Information")
 input_data = {
-    "Age": st.number_input("Enter value for Age", min_value=0.0),
-    "blood_pressure": st.number_input("Enter value for Blood Pressure", min_value=0.0),
-    "specific_gravity": st.number_input("Enter value for Specific Gravity", min_value=0.0),
-    "albumin": st.number_input("Enter value for Albumin", min_value=0.0),
-    "sugar": st.number_input("Enter value for Sugar", min_value=0.0),
-    "blood_glucose_random": st.number_input("Enter value for Blood Glucose Random", min_value=0.0),
-    "blood_urea": st.number_input("Enter value for Blood Urea", min_value=0.0),
-    "serum_creatinine": st.number_input("Enter value for Serum Creatinine", min_value=0.0),
-    "sodium": st.number_input("Enter value for Sodium", min_value=0.0),
-    "potassium": st.number_input("Enter value for Potassium", min_value=0.0),
-    "haemoglobin": st.number_input("Enter value for Haemoglobin", min_value=0.0),
-    "packed_cell_volume": st.number_input("Enter value for Packed Cell Volume", min_value=0.0),
+    "Age": st.number_input("Age", min_value=0),
+    "Blood Pressure": st.number_input("Blood Pressure", min_value=0.0),
+    "Specific Gravity": st.number_input("Specific Gravity", min_value=0.0),
+    "Albumin": st.number_input("Albumin", min_value=0.0),
+    "Sugar": st.number_input("Sugar", min_value=0.0),
+    "Blood Glucose Random": st.number_input("Blood Glucose Random", min_value=0.0),
+    "Blood Urea": st.number_input("Blood Urea", min_value=0.0),
+    "Serum Creatinine": st.number_input("Serum Creatinine", min_value=0.0),
+    "Sodium": st.number_input("Sodium", min_value=0.0),
+    "Potassium": st.number_input("Potassium", min_value=0.0),
+    "Hemoglobin": st.number_input("Hemoglobin", min_value=0.0),
+    "Packed Cell Volume": st.number_input("Packed Cell Volume", min_value=0.0),
 }
 
 # Predict diabetes based on the input data
 if st.button("Predict"):
+    # Convert input data to the format expected by the model
     input_data_as_array = list(input_data.values())
     prediction = loaded_model.predict([input_data_as_array])
 
@@ -52,72 +52,60 @@ if st.button("Predict"):
     if prediction[0] == 1:
         st.error("The model suggests that you may have diabetes.")
 
-        # Display an educational image about diabetes
-        st.image("diab_info.jpg", caption="Understanding Diabetes", use_column_width=True)
-
-        # Widgets to provide resources and lifestyle tips
-        st.header("Resources for Managing Diabetes")
-        
-        st.write("Here are some tips and resources to help you manage diabetes:")
+        # Display additional information and resources
+        st.header("Managing Diabetes: Tips and Resources")
+        st.write("If you're diagnosed with diabetes, consider the following lifestyle and diet tips:")
         if st.checkbox("Diet and Nutrition Tips"):
             st.write("""
-                - Choose foods rich in fiber (whole grains, vegetables, fruits).
-                - Avoid sugary drinks and limit high-sugar foods.
+                - Choose fiber-rich foods like vegetables, fruits, and whole grains.
+                - Avoid sugary drinks and high-sugar foods.
                 - Include lean proteins and healthy fats.
             """)
         
         if st.checkbox("Exercise Recommendations"):
             st.write("""
-                - Aim for at least 150 minutes of moderate exercise each week.
-                - Try low-impact activities, like walking or cycling.
-                - Incorporate strength training exercises.
+                - Aim for 150 minutes of moderate exercise per week.
+                - Try walking, cycling, or low-impact activities.
+                - Add strength training exercises as well.
             """)
         
-        if st.checkbox("Track Blood Sugar Levels"):
-            st.write("Monitoring your blood sugar levels regularly is essential. Speak to a healthcare provider for guidance.")
-
-        st.write("For more information, check out this [link to diabetes care resources](https://www.diabetes.org/)")
+        if st.checkbox("Monitoring Blood Sugar Levels"):
+            st.write("Regular monitoring is essential. Consult a healthcare provider for guidance.")
+        
+        st.write("For more resources, visit the [American Diabetes Association](https://www.diabetes.org/) website.")
 
         # Recommend hospitals
         st.header("Recommended Hospitals for Diabetes Care")
 
-        # Filter hospitals based on your criteria, e.g., those with a diabetes specialty
-        recommended_hospitals = hospitals_df[hospitals_df['COUNTY'].str.contains('COUNTY', case=False, na=False)]
-        
-        # Filter hospitals by selected county
-        recommended_hospitals = hospitals_df[hospitals_df['COUNTY'] == selected_county]
-        
+        # Allow user to select their county for hospital recommendations
+        selected_county = st.selectbox("Select Your County", hospitals_df['COUNTY'].unique())
+
+        # Filter hospitals by selected county and specialized diabetes care
+        recommended_hospitals = hospitals_df[(hospitals_df['COUNTY'] == selected_county) & 
+                                             (hospitals_df['SPECIALTY'] == "Diabetes")]
+
         if not recommended_hospitals.empty:
+            st.write("Here are hospitals in your area specializing in diabetes care:")
             for index, row in recommended_hospitals.iterrows():
                 st.write(f"**{row['HOSPITAL_NAME']}**")
                 st.write(f"Location: {row['COUNTY']}")
-                st.write(f"Office: {row['NHIF_OFFICE']}")
+                st.write(f"Contact: {row['NHIF_OFFICE']}")
                 st.write("---")
         else:
-            st.write("No hospitals specializing in diabetes care found in your area.")
+            st.write("No hospitals specializing in diabetes care found in your selected county.")
 
     # If the prediction does not indicate diabetes
     else:
-        st.success("Great news! You are not likely to have diabetes according to this prediction.")
+        st.success("You are not likely to have diabetes according to this prediction.")
 
-        # Display a healthy lifestyle image
-        st.image("healthy_lifestyle.jpg", caption="Stay Healthy!", use_column_width=True)
-
-        # Interactive widgets to promote a healthy lifestyle
-        st.header("Tips for Staying Healthy")
-
-        diet_plan = st.radio(
-            "Would you like to explore diet plans?",
-            ("Yes", "No")
-        )
+        # Display general healthy lifestyle recommendations
+        st.header("General Tips for Staying Healthy")
+        diet_plan = st.radio("Would you like to explore diet plans?", ("Yes", "No"))
         if diet_plan == "Yes":
-            st.write("Try to focus on a balanced diet rich in vegetables, lean proteins, and whole grains.")
+            st.write("Aim for a balanced diet rich in vegetables, lean proteins, and whole grains.")
 
-        exercise_plan = st.radio(
-            "Interested in exercise recommendations?",
-            ("Yes", "No")
-        )
+        exercise_plan = st.radio("Interested in exercise recommendations?", ("Yes", "No"))
         if exercise_plan == "Yes":
-            st.write("Engage in regular physical activity, like brisk walking, for at least 30 minutes most days of the week.")
+            st.write("Try brisk walking or other moderate activities for 30 minutes most days.")
 
-        st.write("For more tips on maintaining a healthy lifestyle, check out the resources [here](https://www.cdc.gov/healthyweight/healthy_eating/index.html).")
+        st.write("For more tips on staying healthy, check out [CDC Healthy Weight](https://www.cdc.gov/healthyweight/healthy_eating/index.html).")
