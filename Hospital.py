@@ -1,56 +1,123 @@
-#The NEW ONE     
-    
 import streamlit as st
+import pickle
 import pandas as pd
-import joblib  # for loading the trained model
 
-# Load your diabetes prediction model
-diabetes_model = joblib.load("diabetes_model.pkl")
+# Load the diabetes model
+model_path = 'diabetes_model.pkl'  
+try:
+    loaded_model = pickle.load(open(model_path, 'rb'))
+except FileNotFoundError:
+    st.error("Diabetes model file not found. Please make sure 'diabetes_model.pkl' is in the directory.")
+    st.stop()
 
-# Load your hospital dataset
-df_hospitals = pd.read_csv("Hospitals.csv")
+# Load hospital data
+hospital_data_path = 'Hospitals.csv'  # Path to your hospital dataset
+try:
+    hospitals_df = pd.read_csv(hospital_data_path)
+except FileNotFoundError:
+    st.error("Hospital data file not found. Please ensure 'hospitals.csv' is in the directory.")
+    st.stop()
 
-# Function for diabetes prediction
-def predict_diabetes(input_data):
-    prediction = diabetes_model.predict([input_data])
-    return "Diabetic" if prediction[0] == 1 else "Not Diabetic"
+# Title and subtitle
+st.title("Diabetes Prediction and Wellness Guide")
+st.write("Get a quick prediction and learn ways to improve your health!")
+st.image("diabetes.jpg", caption="Understanding Diabetes", use_column_width=True)
 
-# Streamlit UI
-st.title("Dialysdis Hospital Recommendation and Diabetes Prediction")
+# Collect input data from the user for prediction
+st.header("Please Enter Your Health Information")
+input_data = {
+    "Age": st.number_input("Enter value for Age", min_value=0.0),
+    "blood_pressure": st.number_input("Enter value for Blood Pressure", min_value=0.0),
+    "specific_gravity": st.number_input("Enter value for Specific Gravity", min_value=0.0),
+    "albumin": st.number_input("Enter value for Albumin", min_value=0.0),
+    "sugar": st.number_input("Enter value for Sugar", min_value=0.0),
+    "blood_glucose_random": st.number_input("Enter value for Blood Glucose Random", min_value=0.0),
+    "blood_urea": st.number_input("Enter value for Blood Urea", min_value=0.0),
+    "serum_creatinine": st.number_input("Enter value for Serum Creatinine", min_value=0.0),
+    "sodium": st.number_input("Enter value for Sodium", min_value=0.0),
+    "potassium": st.number_input("Enter value for Potassium", min_value=0.0),
+    "haemoglobin": st.number_input("Enter value for Haemoglobin", min_value=0.0),
+    "packed_cell_volume": st.number_input("Enter value for Packed Cell Volume", min_value=0.0),
+}
 
-# Diabetes Prediction Inputs
-st.header("Diabetes Prediction")
-age = st.number_input("Age", min_value=0)
-glucose_level = st.number_input("Glucose Level", min_value=0)
-blood_pressure = st.number_input("Blood Pressure", min_value=0)
+# Predict diabetes based on the input data
+if st.button("Predict"):
+    input_data_as_array = list(input_data.values())
+    prediction = loaded_model.predict([input_data_as_array])
 
-# Gather input data for prediction
-input_data = [age, glucose_level, blood_pressure]  # Add more features as needed
+    # Debug output to verify prediction
+    st.write(f"Prediction result: {prediction[0]} (1 indicates possible diabetes)")
 
-if st.button("Predict Diabetes"):
-    result = predict_diabetes(input_data)
-    st.write(f"Prediction: {result}")
+    # If the prediction indicates diabetes
+    if prediction[0] == 1:
+        st.error("The model suggests that you may have diabetes.")
 
-# Hospital Recommendation Section
-st.header("Hospital Recommendation")
-county_location = st.selectbox("Select Your Location", df_hospitals['COUNTY'].unique())
-hospital_code = st.selectbox("Select NHIF Hospital Code ", df_hospitals['NHIF_HOSPITAL_CODE'].unique())
+        # Display an educational image about diabetes
+        st.image("diab_info.jpg", caption="Understanding Diabetes", use_column_width=True)
 
-# Function to recommend hospitals
-def recommend_hospitals(COUNTY, NHIF_HOSPITAL_CODE):
-    filtered_hospitals = df_hospitals[
-        (df_hospitals['COUNTY'] == county_location) &
-        (df_hospitals['NHIF_HOSPITAL_CODE'] == hospital_code)
-    ]
-    
-    if filtered_hospitals.empty:
-        return "No hospitals found for the selected criteria."
-    
-    return filtered_hospitals
+        # Widgets to provide resources and lifestyle tips
+        st.header("Resources for Managing Diabetes")
+        
+        st.write("Here are some tips and resources to help you manage diabetes:")
+        if st.checkbox("Diet and Nutrition Tips"):
+            st.write("""
+                - Choose foods rich in fiber (whole grains, vegetables, fruits).
+                - Avoid sugary drinks and limit high-sugar foods.
+                - Include lean proteins and healthy fats.
+            """)
+        
+        if st.checkbox("Exercise Recommendations"):
+            st.write("""
+                - Aim for at least 150 minutes of moderate exercise each week.
+                - Try low-impact activities, like walking or cycling.
+                - Incorporate strength training exercises.
+            """)
+        
+        if st.checkbox("Track Blood Sugar Levels"):
+            st.write("Monitoring your blood sugar levels regularly is essential. Speak to a healthcare provider for guidance.")
 
-# Recommendation button
-if st.button("Get Recommendations"):
-    recommended_hospitals = recommend_hospitals(county_location, hospital_code)
-    st.write(recommended_hospitals)
-    
+        st.write("For more information, check out this [link to diabetes care resources](https://www.diabetes.org/)")
 
+        # Recommend hospitals
+        st.header("Recommended Hospitals for Diabetes Care")
+
+        # Filter hospitals based on your criteria, e.g., those with a diabetes specialty
+        recommended_hospitals = hospitals_df[hospitals_df['COUNTY'].str.contains('COUNTY', case=False, na=False)]
+        
+        # Filter hospitals by selected county
+        recommended_hospitals = hospitals_df[hospitals_df['COUNTY'] == selected_county]
+        
+        if not recommended_hospitals.empty:
+            for index, row in recommended_hospitals.iterrows():
+                st.write(f"**{row['HOSPITAL_NAME']}**")
+                st.write(f"Location: {row['COUNTY']}")
+                st.write(f"Office: {row['NHIF_OFFICE']}")
+                st.write("---")
+        else:
+            st.write("No hospitals specializing in diabetes care found in your area.")
+
+    # If the prediction does not indicate diabetes
+    else:
+        st.success("Great news! You are not likely to have diabetes according to this prediction.")
+
+        # Display a healthy lifestyle image
+        st.image("healthy_lifestyle.jpg", caption="Stay Healthy!", use_column_width=True)
+
+        # Interactive widgets to promote a healthy lifestyle
+        st.header("Tips for Staying Healthy")
+
+        diet_plan = st.radio(
+            "Would you like to explore diet plans?",
+            ("Yes", "No")
+        )
+        if diet_plan == "Yes":
+            st.write("Try to focus on a balanced diet rich in vegetables, lean proteins, and whole grains.")
+
+        exercise_plan = st.radio(
+            "Interested in exercise recommendations?",
+            ("Yes", "No")
+        )
+        if exercise_plan == "Yes":
+            st.write("Engage in regular physical activity, like brisk walking, for at least 30 minutes most days of the week.")
+
+        st.write("For more tips on maintaining a healthy lifestyle, check out the resources [here](https://www.cdc.gov/healthyweight/healthy_eating/index.html).")
