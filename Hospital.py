@@ -116,7 +116,7 @@ if st.button("Predict"):
             st.header("Hospitals for General Check-Up")
             
             # Load hospital data
-            hospital_data_path = 'Hospitals.csv'  # Path to your hospital dataset
+            hospital_data_path = 'cleaned_hospitals.csv'  # Path to your hospital dataset
             try:
                 hospitals_df = pd.read_csv(hospital_data_path)
                 st.write("Columns in hospital data:", hospitals_df.columns)  # Display the column names
