@@ -74,7 +74,17 @@ if st.button("Predict"):
 
             # Hospital recommendation for diabetes care
             st.header("Recommended Hospitals for Diabetes Care")
+            
+            # Load hospital data
+            hospital_data_path = 'hospitals.csv'  # Path to your hospital dataset
+            try:
+                hospitals_df = pd.read_csv(hospital_data_path)
+                st.write("Columns in hospital data:", hospitals_df.columns)  # Display the column names
+            except FileNotFoundError:
+                st.error("Hospital data file not found. Please ensure 'hospitals.csv' is in the directory.")
+                st.stop()
 
+            
             selected_county = st.selectbox("Select Your County", hospitals_df['COUNTY'].unique())
             recommended_hospitals = hospitals_df[(hospitals_df['COUNTY'] == selected_county) & 
                                                 (hospitals_df['SPECIALTY'] == "Diabetes")]
