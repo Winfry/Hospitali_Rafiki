@@ -1,6 +1,7 @@
 import streamlit as st
 import pickle
 import pandas as pd
+import numpy as np
 
 # Load the diabetes model
 model_path = 'diabetes_model.pkl'

@@ -1,7 +1,7 @@
 import streamlit as st
 import pickle
 import pandas as pd
-import numpy
+import numpy as np  # Import numpy to handle np.ndarray
 
 # Load the diabetes prediction model
 model_path = 'diabetes_model.pkl'  
@@ -12,7 +12,7 @@ except FileNotFoundError:
     st.stop()
 
 # Load hospital data
-hospital_data_path = 'Hospitals.csv'  # Path to your hospital dataset
+hospital_data_path = 'hospitals.csv'  # Path to your hospital dataset
 try:
     hospitals_df = pd.read_csv(hospital_data_path)
 except FileNotFoundError:
@@ -21,7 +21,7 @@ except FileNotFoundError:
 
 # Title and description
 st.title("Diabetes Prediction and Hospital Recommendation")
-st.write("Get a quick prediction for diabetes and see hospitals recommended for diabetes care.")
+st.write("Get a quick prediction for diabetes and see hospitals recommended for diabetes care or general check-ups.")
 
 # Collect input data from the user for prediction
 st.header("Please Enter Your Health Information")
@@ -46,81 +46,77 @@ if st.button("Predict"):
     input_data_as_array = [list(input_data.values())]
 
     try:
-        # Get the prediction and print its type and content for debugging
+        # Get the prediction
         prediction = loaded_model.predict(input_data_as_array)
-        st.write(f"Raw Prediction Output: {prediction}")  # Show the raw output
-        st.write(f"Prediction Type: {type(prediction)}")  # Show the type
+        prediction_result = prediction[0]
 
-        # Check if prediction is in the expected format (a list or array with at least one element)
-        if isinstance(prediction, (list, tuple, np.ndarray)) and len(prediction) > 0:
-            prediction_result = prediction[0]
-            st.write(f"Prediction Result (First Element): {prediction_result}")  # Output for debugging
+        if prediction_result == 1:
+            st.error("The model suggests that you may have diabetes.")
+            
+            # Display diabetes management resources
+            st.header("Managing Diabetes: Tips and Resources")
+            st.write("If you're diagnosed with diabetes, consider these lifestyle tips:")
+            if st.checkbox("Diet and Nutrition Tips"):
+                st.write("""
+                    - Choose fiber-rich foods like vegetables, fruits, and whole grains.
+                    - Avoid sugary drinks and high-sugar foods.
+                    - Include lean proteins and healthy fats.
+                """)
+            
+            if st.checkbox("Exercise Recommendations"):
+                st.write("""
+                    - Aim for 150 minutes of moderate exercise per week.
+                    - Try walking, cycling, or low-impact activities.
+                    - Add strength training exercises as well.
+                """)
+            
+            st.write("For more resources, visit the [American Diabetes Association](https://www.diabetes.org/) website.")
 
-            # If the prediction indicates diabetes
-            if prediction_result == 1:
-                st.error("The model suggests that you may have diabetes.")
-                
-                # Display additional information and resources
-                st.header("Managing Diabetes: Tips and Resources")
-                st.write("If you're diagnosed with diabetes, consider the following lifestyle and diet tips:")
-                if st.checkbox("Diet and Nutrition Tips"):
-                    st.write("""
-                        - Choose fiber-rich foods like vegetables, fruits, and whole grains.
-                        - Avoid sugary drinks and high-sugar foods.
-                        - Include lean proteins and healthy fats.
-                    """)
-                
-                if st.checkbox("Exercise Recommendations"):
-                    st.write("""
-                        - Aim for 150 minutes of moderate exercise per week.
-                        - Try walking, cycling, or low-impact activities.
-                        - Add strength training exercises as well.
-                    """)
-                
-                if st.checkbox("Monitoring Blood Sugar Levels"):
-                    st.write("Regular monitoring is essential. Consult a healthcare provider for guidance.")
-                
-                st.write("For more resources, visit the [American Diabetes Association](https://www.diabetes.org/) website.")
+            # Hospital recommendation for diabetes care
+            st.header("Recommended Hospitals for Diabetes Care")
 
-                # Recommend hospitals
-                st.header("Recommended Hospitals for Diabetes Care")
+            selected_county = st.selectbox("Select Your County", hospitals_df['COUNTY'].unique())
+            recommended_hospitals = hospitals_df[(hospitals_df['COUNTY'] == selected_county) & 
+                                                (hospitals_df['SPECIALTY'] == "Diabetes")]
 
-                # Allow user to select their county for hospital recommendations
-                selected_county = st.selectbox("Select Your County", hospitals_df['COUNTY'].unique())
-
-                # Filter hospitals by selected county and specialized diabetes care
-                recommended_hospitals = hospitals_df[(hospitals_df['COUNTY'] == selected_county) & 
-                                                    (hospitals_df['SPECIALTY'] == "Diabetes")]
-
-                if not recommended_hospitals.empty:
-                    st.write("Here are hospitals in your area specializing in diabetes care:")
-                    for index, row in recommended_hospitals.iterrows():
-                        st.write(f"**{row['HOSPITAL_NAME']}**")
-                        st.write(f"Location: {row['COUNTY']}")
-                        st.write(f"Contact: {row['NHIF_OFFICE']}")
-                        st.write("---")
-                else:
-                    st.write("No hospitals specializing in diabetes care found in your selected county.")
-
-            # If the prediction does not indicate diabetes
+            if not recommended_hospitals.empty:
+                st.write("Hospitals in your area specializing in diabetes care:")
+                for _, row in recommended_hospitals.iterrows():
+                    st.write(f"**{row['HOSPITAL_NAME']}**")
+                    st.write(f"Location: {row['COUNTY']}")
+                    st.write(f"Contact: {row['NHIF_OFFICE']}")
+                    st.write("---")
             else:
-                st.success("You are not likely to have diabetes according to this prediction.")
-
-                # Display general healthy lifestyle recommendations
-                st.header("General Tips for Staying Healthy")
-                diet_plan = st.radio("Would you like to explore diet plans?", ("Yes", "No"))
-                if diet_plan == "Yes":
-                    st.write("Aim for a balanced diet rich in vegetables, lean proteins, and whole grains.")
-
-                exercise_plan = st.radio("Interested in exercise recommendations?", ("Yes", "No"))
-                if exercise_plan == "Yes":
-                    st.write("Try brisk walking or other moderate activities for 30 minutes most days.")
-
-                st.write("For more tips on staying healthy, check out [CDC Healthy Weight](https://www.cdc.gov/healthyweight/healthy_eating/index.html).")
+                st.write("No specialized diabetes hospitals found in your selected county.")
 
         else:
-            st.error("Unexpected format for prediction output.")
+            st.success("You are not likely to have diabetes according to this prediction.")
+
+            # Healthy lifestyle recommendations
+            st.header("General Tips for Staying Healthy")
+            if st.radio("Explore Diet Plans", ["Yes", "No"]) == "Yes":
+                st.write("Try a balanced diet with vegetables, lean proteins, and whole grains.")
+            
+            if st.radio("Exercise Recommendations", ["Yes", "No"]) == "Yes":
+                st.write("Consider brisk walking or other moderate activities for 30 minutes most days.")
+
+            st.write("For more tips, visit [CDC Healthy Weight](https://www.cdc.gov/healthyweight/healthy_eating/index.html).")
+
+            # Hospital recommendation for general check-up
+            st.header("Hospitals for General Check-Up")
+
+            selected_county = st.selectbox("Select Your County for Check-Up", hospitals_df['COUNTY'].unique())
+            hospitals_in_county = hospitals_df[hospitals_df['COUNTY'] == selected_county]
+
+            if not hospitals_in_county.empty:
+                st.write("Hospitals in your area available for a general check-up:")
+                for _, row in hospitals_in_county.iterrows():
+                    st.write(f"**{row['HOSPITAL_NAME']}**")
+                    st.write(f"Location: {row['COUNTY']}")
+                    st.write(f"Contact: {row['NHIF_OFFICE']}")
+                    st.write("---")
+            else:
+                st.write("No hospitals found in your selected county for general check-up.")
 
     except Exception as e:
         st.error(f"Error in prediction: {e}")
-
