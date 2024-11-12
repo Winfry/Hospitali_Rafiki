@@ -91,20 +91,41 @@ if st.button("Predict"):
         st.image("healthy_lifestyle.jpg", caption="Stay Healthy!", use_column_width=True)
 
         # Interactive widgets to promote a healthy lifestyle
-        st.header("Tips for Staying Healthy")
+        st.header("General Tips for Staying Healthy")
+        if st.radio("Explore Diet Plans", ["Yes", "No"]) == "Yes":
+            st.write("Try a balanced diet with vegetables, lean proteins, and whole grains.")
+            
+        if st.radio("Exercise Recommendations", ["Yes", "No"]) == "Yes":
+            st.write("Consider brisk walking or other moderate activities for 30 minutes most days.")
 
-        diet_plan = st.radio(
-            "Would you like to explore diet plans?",
-            ("Yes", "No")
-        )
-        if diet_plan == "Yes":
-            st.write("Try to focus on a balanced diet rich in vegetables, lean proteins, and whole grains.")
+        st.write("For more tips, visit [CDC Healthy Weight](https://www.cdc.gov/healthyweight/healthy_eating/index.html).")
 
-        exercise_plan = st.radio(
-            "Interested in exercise recommendations?",
-            ("Yes", "No")
-        )
-        if exercise_plan == "Yes":
-            st.write("Engage in regular physical activity, like brisk walking, for at least 30 minutes most days of the week.")
+        # Hospital recommendation for general check-up
+        st.header("Hospitals for General Check-Up")
+            
+        # Load hospital data
+        hospital_data_path = 'cleaned_hospitals.csv'  # Path to your hospital dataset
+        try:
+            hospitals_df = pd.read_csv(hospital_data_path)
+            st.write("Columns in hospital data:", hospitals_df.columns)  # Display the column names
+        except FileNotFoundError:
+            st.error("Hospital data file not found. Please ensure 'hospitals.csv' is in the directory.")
+            st.stop()
 
-        st.write("For more tips on maintaining a healthy lifestyle, check out the resources [here](https://www.cdc.gov/healthyweight/healthy_eating/index.html).")
+        selected_county = st.selectbox("Select Your County for Check-Up", hospitals_df['COUNTY'].unique())
+        hospitals_in_county = hospitals_df[hospitals_df['COUNTY'] == selected_county]
+
+        if not hospitals_in_county.empty:
+            st.write("Hospitals in your area available for a general check-up:")
+            for _, row in hospitals_in_county.iterrows():
+                    st.write(f"**{row['HOSPITAL_NAME']}**")
+                    st.write(f"Location: {row['COUNTY']}")
+                    st.write(f"Contact: {row['NHIF_OFFICE']}")
+                    st.write("---")
+            else:
+                 st.write("No hospitals found in your selected county for general check-up.")
+
+    except Exception as e:
+        st.error(f"Error in prediction: {e}")
+
+       
