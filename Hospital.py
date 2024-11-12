@@ -1,6 +1,7 @@
 import streamlit as st
 import pickle
 import pandas as pd
+import numpy
 
 # Load the diabetes prediction model
 model_path = 'diabetes_model.pkl'  
@@ -42,70 +43,84 @@ input_data = {
 # Predict diabetes based on the input data
 if st.button("Predict"):
     # Convert input data to the format expected by the model
-    input_data_as_array = list(input_data.values())
-    prediction = loaded_model.predict([input_data_as_array])
+    input_data_as_array = [list(input_data.values())]
 
-    # Debug output to verify prediction
-    st.write(f"Prediction result: {prediction[0]} (1 indicates possible diabetes)")
+    try:
+        # Get the prediction and print its type and content for debugging
+        prediction = loaded_model.predict(input_data_as_array)
+        st.write(f"Raw Prediction Output: {prediction}")  # Show the raw output
+        st.write(f"Prediction Type: {type(prediction)}")  # Show the type
 
-    # If the prediction indicates diabetes
-    if prediction[0] == 1:
-        st.error("The model suggests that you may have diabetes.")
+        # Check if prediction is in the expected format (a list or array with at least one element)
+        if isinstance(prediction, (list, tuple, np.ndarray)) and len(prediction) > 0:
+            prediction_result = prediction[0]
+            st.write(f"Prediction Result (First Element): {prediction_result}")  # Output for debugging
 
-        # Display additional information and resources
-        st.header("Managing Diabetes: Tips and Resources")
-        st.write("If you're diagnosed with diabetes, consider the following lifestyle and diet tips:")
-        if st.checkbox("Diet and Nutrition Tips"):
-            st.write("""
-                - Choose fiber-rich foods like vegetables, fruits, and whole grains.
-                - Avoid sugary drinks and high-sugar foods.
-                - Include lean proteins and healthy fats.
-            """)
-        
-        if st.checkbox("Exercise Recommendations"):
-            st.write("""
-                - Aim for 150 minutes of moderate exercise per week.
-                - Try walking, cycling, or low-impact activities.
-                - Add strength training exercises as well.
-            """)
-        
-        if st.checkbox("Monitoring Blood Sugar Levels"):
-            st.write("Regular monitoring is essential. Consult a healthcare provider for guidance.")
-        
-        st.write("For more resources, visit the [American Diabetes Association](https://www.diabetes.org/) website.")
+            # If the prediction indicates diabetes
+            if prediction_result == 1:
+                st.error("The model suggests that you may have diabetes.")
+                
+                # Display additional information and resources
+                st.header("Managing Diabetes: Tips and Resources")
+                st.write("If you're diagnosed with diabetes, consider the following lifestyle and diet tips:")
+                if st.checkbox("Diet and Nutrition Tips"):
+                    st.write("""
+                        - Choose fiber-rich foods like vegetables, fruits, and whole grains.
+                        - Avoid sugary drinks and high-sugar foods.
+                        - Include lean proteins and healthy fats.
+                    """)
+                
+                if st.checkbox("Exercise Recommendations"):
+                    st.write("""
+                        - Aim for 150 minutes of moderate exercise per week.
+                        - Try walking, cycling, or low-impact activities.
+                        - Add strength training exercises as well.
+                    """)
+                
+                if st.checkbox("Monitoring Blood Sugar Levels"):
+                    st.write("Regular monitoring is essential. Consult a healthcare provider for guidance.")
+                
+                st.write("For more resources, visit the [American Diabetes Association](https://www.diabetes.org/) website.")
 
-        # Recommend hospitals
-        st.header("Recommended Hospitals for Diabetes Care")
+                # Recommend hospitals
+                st.header("Recommended Hospitals for Diabetes Care")
 
-        # Allow user to select their county for hospital recommendations
-        selected_county = st.selectbox("Select Your County", hospitals_df['COUNTY'].unique())
+                # Allow user to select their county for hospital recommendations
+                selected_county = st.selectbox("Select Your County", hospitals_df['COUNTY'].unique())
 
-        # Filter hospitals by selected county and specialized diabetes care
-        recommended_hospitals = hospitals_df[(hospitals_df['COUNTY'] == selected_county) & 
-                                             (hospitals_df['SPECIALTY'] == "Diabetes")]
+                # Filter hospitals by selected county and specialized diabetes care
+                recommended_hospitals = hospitals_df[(hospitals_df['COUNTY'] == selected_county) & 
+                                                    (hospitals_df['SPECIALTY'] == "Diabetes")]
 
-        if not recommended_hospitals.empty:
-            st.write("Here are hospitals in your area specializing in diabetes care:")
-            for index, row in recommended_hospitals.iterrows():
-                st.write(f"**{row['HOSPITAL_NAME']}**")
-                st.write(f"Location: {row['COUNTY']}")
-                st.write(f"Contact: {row['NHIF_OFFICE']}")
-                st.write("---")
+                if not recommended_hospitals.empty:
+                    st.write("Here are hospitals in your area specializing in diabetes care:")
+                    for index, row in recommended_hospitals.iterrows():
+                        st.write(f"**{row['HOSPITAL_NAME']}**")
+                        st.write(f"Location: {row['COUNTY']}")
+                        st.write(f"Contact: {row['NHIF_OFFICE']}")
+                        st.write("---")
+                else:
+                    st.write("No hospitals specializing in diabetes care found in your selected county.")
+
+            # If the prediction does not indicate diabetes
+            else:
+                st.success("You are not likely to have diabetes according to this prediction.")
+
+                # Display general healthy lifestyle recommendations
+                st.header("General Tips for Staying Healthy")
+                diet_plan = st.radio("Would you like to explore diet plans?", ("Yes", "No"))
+                if diet_plan == "Yes":
+                    st.write("Aim for a balanced diet rich in vegetables, lean proteins, and whole grains.")
+
+                exercise_plan = st.radio("Interested in exercise recommendations?", ("Yes", "No"))
+                if exercise_plan == "Yes":
+                    st.write("Try brisk walking or other moderate activities for 30 minutes most days.")
+
+                st.write("For more tips on staying healthy, check out [CDC Healthy Weight](https://www.cdc.gov/healthyweight/healthy_eating/index.html).")
+
         else:
-            st.write("No hospitals specializing in diabetes care found in your selected county.")
+            st.error("Unexpected format for prediction output.")
 
-    # If the prediction does not indicate diabetes
-    else:
-        st.success("You are not likely to have diabetes according to this prediction.")
+    except Exception as e:
+        st.error(f"Error in prediction: {e}")
 
-        # Display general healthy lifestyle recommendations
-        st.header("General Tips for Staying Healthy")
-        diet_plan = st.radio("Would you like to explore diet plans?", ("Yes", "No"))
-        if diet_plan == "Yes":
-            st.write("Aim for a balanced diet rich in vegetables, lean proteins, and whole grains.")
-
-        exercise_plan = st.radio("Interested in exercise recommendations?", ("Yes", "No"))
-        if exercise_plan == "Yes":
-            st.write("Try brisk walking or other moderate activities for 30 minutes most days.")
-
-        st.write("For more tips on staying healthy, check out [CDC Healthy Weight](https://www.cdc.gov/healthyweight/healthy_eating/index.html).")

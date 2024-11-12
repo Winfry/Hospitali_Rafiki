@@ -11,7 +11,7 @@ except FileNotFoundError:
     st.stop()
 
 # Load hospital data
-hospital_data_path = 'hospitals.csv'  # Path to your hospital dataset
+hospital_data_path = 'Hospitals.csv'  # Path to your hospital dataset
 try:
     hospitals_df = pd.read_csv(hospital_data_path)
 except FileNotFoundError:
