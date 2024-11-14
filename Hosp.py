@@ -12,7 +12,7 @@ except FileNotFoundError:
     st.stop()
 
 # Load hospital data
-hospital_data_path = 'Hospitals.csv'
+hospital_data_path = 'cleaned_hospitals.csv'
 try:
     hospitals_df = pd.read_csv(hospital_data_path)
 except FileNotFoundError:
@@ -21,7 +21,7 @@ except FileNotFoundError:
 
 # Title and description
 st.title("Diabetes Prediction and Hospital Recommendation")
-st.write("Get a quick prediction and learn ways to improve your health.")
+st.write("Enter your information below to receive a prediction and relevant hospital recommendations.")
 
 # Collect user health information for prediction
 st.header("Enter Your Health Information")
@@ -50,7 +50,7 @@ if st.button("Predict"):
         prediction = loaded_model.predict(input_data_as_array)
         prediction_result = prediction[0]
 
-        # Hospital recommendations based on diabetes prediction
+        # Allow the user to select their county for hospital recommendations
         selected_county = st.selectbox("Select Your County", hospitals_df['COUNTY'].unique())
 
         if prediction_result == 1:
@@ -58,8 +58,11 @@ if st.button("Predict"):
             st.image("diab_info.jpg", caption="Understanding Diabetes", use_column_width=True)
 
             st.header("Recommended Hospitals for Diabetes Care")
-            recommended_hospitals = hospitals_df[(hospitals_df['COUNTY'] == selected_county) & 
-                                                 (hospitals_df['SPECIALTY'].str.contains("Diabetes", case=False, na=False))]
+            # Filter hospitals that specialize in diabetes within the selected county
+            recommended_hospitals = hospitals_df[
+                (hospitals_df['COUNTY'] == selected_county) & 
+                (hospitals_df['SPECIALTY'].str.contains("Diabetes", case=False, na=False))
+            ]
 
             if not recommended_hospitals.empty:
                 for _, row in recommended_hospitals.iterrows():
@@ -74,6 +77,7 @@ if st.button("Predict"):
             st.image("healthy_lifestyle.jpg", caption="Stay Healthy!", use_column_width=True)
 
             st.header("Hospitals for General Check-Up")
+            # Show all hospitals in the selected county for a general check-up
             hospitals_in_county = hospitals_df[hospitals_df['COUNTY'] == selected_county]
 
             if not hospitals_in_county.empty:
@@ -86,3 +90,5 @@ if st.button("Predict"):
 
     except Exception as e:
         st.error(f"Error in prediction: {e}")
+
+
