@@ -135,10 +135,17 @@ if st.button("Predict"):
                 hospitals_df = pd.read_csv(hospital_data_path)
                 st.write("Columns in hospital data:", hospitals_df.columns)  # Display the column names
             except FileNotFoundError:
-                st.error("Hospital data file not found. Please ensure 'hospitals.csv' is in the directory.")
+                st.error("Hospital data file not found. Please ensure 'cleaned_hospitals.csv' is in the directory.")
                 st.stop()
-
+                
+            # Title and description
+            st.title("Hospital Recommendation System")
+            st.write("Select your preferred county to find recommended hospitals in your area.")
+    
+            # Select county
             selected_county = st.selectbox("Select Your County for Check-Up", hospitals_df['COUNTY'].unique())
+            
+            # Filter hospitals by selected county
             hospitals_in_county = hospitals_df[hospitals_df['COUNTY'] == selected_county]
 
             if not hospitals_in_county.empty:
