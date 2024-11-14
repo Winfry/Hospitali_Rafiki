@@ -50,31 +50,30 @@ if st.button("Predict"):
     try:
         prediction = loaded_model.predict(input_data_as_array)
         if prediction[0] == 1:
-            st.error("The model suggests that you may have diabetes.")
+            st.error("The model suggests that you may have A Kidney Disease.")
             
         else:
             st.success("GREAT!You are not likely to have a Kidney disease according to this prediction.")
             st.write("For additional support, consider visiting a healthcare provider for regular check-ups, even if no issues are detected. Keeping a proactive approach is key to long-term kidney health!")
-            # Display diabetes management resources
-            st.header("Resources for Managing a Kidney Disease")
-            st.write("Here are some tips and resources to help you manage A chronic Kidney Disease:")
-            if st.checkbox("Diet and Nutrition Tips"):
+            
+            # Show general resources for kidney health
+            st.header("Resources for Maintaining Kidney Health")
+            if st.checkbox("Diet and Nutrition Tips for Kidney Health"):
                 st.write("""
-                    - Choose fiber-rich foods like vegetables, fruits, and whole grains.
-                    - Avoid sugary drinks and high-sugar foods.
-                    - Include lean proteins and healthy fats.
+                    - Stay hydrated by drinking water throughout the day.
+                    - Limit salt intake to reduce kidney strain.
+                    - Include fresh fruits and vegetables in your diet.
                 """)
             
-            if st.checkbox("Exercise Recommendations"):
+            if st.checkbox("Exercise Recommendations for Kidney Health"):
                 st.write("""
-                    - Aim for 150 minutes of moderate exercise per week.
-                    - Try walking, cycling, or low-impact activities.
-                    - Add strength training exercises as well.
+                    - Engage in regular physical activity like walking, cycling, or swimming.
+                    - Aim for 30 minutes a day to support overall kidney health.
+                    - Avoid high-protein diets, as excess protein can overwork the kidneys.
                 """)
-            
+
     except Exception as e:
         st.error(f"Error in prediction: {e}")
-        st.stop()
 
 # Hospital Recommendation Section
 st.header("Hospital Recommendation Especially For Kidney Care")
