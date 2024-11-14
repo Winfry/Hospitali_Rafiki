@@ -20,9 +20,9 @@ except FileNotFoundError:
     st.stop()
 
 # Title and description
-st.title("Diabetes Prediction and Hospital Recommendation System")
-st.write("Provide your health information for a quick diabetes risk assessment, along with hospital recommendations.Get a quick prediction and learn ways to improve your health! Diabetes is a chronic health condition that affects how the body processes blood sugar (glucose). When unmanaged, high blood sugar levels can lead to severe complications over time, impacting various organs and systems in the body, including the heart, blood vessels, nerves, eyes, and kidneys.By focusing on kidney health in our diabetes prediction and hospital recommendation system, we aim to support early intervention and provide valuable resources for those at risk, helping to prevent severe kidney-related issues.")
-st.image("diabetes.jpg", caption="Understanding Diabetes", use_column_width=True)
+st.title("Chronic Kidney Disease Prediction and Hospital Recommendation System")
+st.write("Chronic kidney disease (CKD) is a long-term condition where the kidneys gradually lose function, impacting their ability to filter waste and excess fluids from the blood. Often caused by conditions like diabetes and high blood pressure, CKD progresses slowly and may not show symptoms until significant damage has occurred. Managing CKD early can slow its progression and help prevent complications, highlighting the importance of regular check-ups and a proactive approach to kidney health.")
+st.image("chronic-kidney-disease.jpg", caption="Understanding Diabetes", use_column_width=True)
 
 
 # Collect input data for prediction
