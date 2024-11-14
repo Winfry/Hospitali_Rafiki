@@ -42,6 +42,9 @@ input_data = {
     "Packed Cell Volume": st.number_input("Packed Cell Volume", min_value=0.0),
 }
 
+# Convert input data to array format
+input_data_as_array = np.array(list(input_data.values())).reshape(1, -1)
+
 # Predict diabetes based on the input data
 if st.button("Predict"):
     # Convert input data to the format expected by the model

@@ -51,14 +51,34 @@ if st.button("Predict"):
         prediction = loaded_model.predict(input_data_as_array)
         if prediction[0] == 1:
             st.error("The model suggests that you may have diabetes.")
+            # Display an educational image about diabetes
+            st.image("diab_info.jpg", caption="Understanding Diabetes", use_column_width=True)
+            # Display diabetes management resources
+            st.header("Resources for Managing Diabetes")
+            st.write("Here are some tips and resources to help you manage diabetes:")
+            if st.checkbox("Diet and Nutrition Tips"):
+                st.write("""
+                    - Choose fiber-rich foods like vegetables, fruits, and whole grains.
+                    - Avoid sugary drinks and high-sugar foods.
+                    - Include lean proteins and healthy fats.
+                """)
+            
+            if st.checkbox("Exercise Recommendations"):
+                st.write("""
+                    - Aim for 150 minutes of moderate exercise per week.
+                    - Try walking, cycling, or low-impact activities.
+                    - Add strength training exercises as well.
+                """)
         else:
-            st.success("You are not likely to have diabetes according to this prediction.")
+            st.success("GREAT!You are not likely to have diabetes according to this prediction.")
+            
     except Exception as e:
         st.error(f"Error in prediction: {e}")
         st.stop()
 
 # Hospital Recommendation Section
-st.header("Hospital Recommendation")
+st.header("Hospital Recommendation Especially For Kidney Care")
+st.write("Kidney health is essential for overall well-being, as kidneys filter waste and maintain the body’s fluid balance. In Kenya, the National Hospital Insurance Fund (NHIF) offers support for kidney care, covering dialysis and other treatments in approved hospitals. This makes vital kidney care more accessible, particularly for those managing chronic kidney diseases or diabetes-related complications.Here is a list of NHIF-accredited hospitals across Kenya are equipped to provide quality care, offering patients critical support in managing and improving their kidney health")
 selected_county = st.selectbox("Select Your County", hospitals_df['COUNTY'].unique())
 
 # Filter and display hospitals in the selected county
