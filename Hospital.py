@@ -79,7 +79,7 @@ if st.button("Predict"):
 # Hospital Recommendation Section
 st.header("Hospital Recommendation Especially For Kidney Care")
 st.write("Kidney health is essential for overall well-being, as kidneys filter waste and maintain the body’s fluid balance. In Kenya, the National Hospital Insurance Fund (NHIF) offers support for kidney care, covering dialysis and other treatments in approved hospitals. This makes vital kidney care more accessible, particularly for those managing chronic kidney diseases or diabetes-related complications.Here is a list of NHIF-accredited hospitals across Kenya are equipped to provide quality care, offering patients critical support in managing and improving their kidney health and Dialysis Centers")
-st.image("Dialysis2.jpg", caption="A Kenyan Kidney Dialysis Center", use_column_width=True)
+st.image("Dialysis_Center.jpg", caption="A Kenyan Kidney Dialysis Center", use_column_width=True)
 selected_county = st.selectbox("Select Your County", hospitals_df['COUNTY'].unique())
 
 # Filter and display hospitals in the selected county
