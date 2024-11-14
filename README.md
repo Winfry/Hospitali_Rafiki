@@ -24,30 +24,37 @@ The project uses a dataset with information about NHIF-friendly hospitals and di
 To set up and run this project locally:
 
 # Clone this repository:
-bash
-Copy code
-git clone https://github.com/username/nhif-hospital-recommendation.git
-Navigate to the project directory:
-bash
-Copy code
-cd nhif-hospital-recommendation
-Install dependencies:
-bash
-Copy code
-pip install -r requirements.txt
+# bash
+- Copy code
+git clone https://github.com/Winfry/Hospitali_Rafiki.git
+
+# Navigate to the project directory:
+- bash
+- Copy code
+- cd nhif-hospital-recommendation
+
+# Install dependencies:
+- bash
+- Copy code
+pip install -r requirements.txt.
 Ensure your dataset and model files (cleaned_hospitals.csv and diabetes_model.pkl) are in the project directory.
 Run the Streamlit application:
-bash
-Copy code
-streamlit run app.py
-Usage
+- bash
+- Copy code
+streamlit run Hospital.py
+
+# Usage
 Open the app in your web browser.
 Enter your health information to get a kidney disease prediction.
 If at risk, receive recommendations for NHIF-friendly hospitals and dialysis centers nearby.
 Explore general health resources for managing or preventing kidney disease.
 Screenshots
 Prediction Section
-<!-- Replace with actual image path if available -->
+
+
+
+
+
 
 Hospital Recommendation Section
 <!-- Replace with actual image path if available -->
