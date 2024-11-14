@@ -51,7 +51,7 @@ Explore general health resources for managing or preventing kidney disease.
 Screenshots
 
 # Prediction Section
-![App Screenshot]("Screenshot 2024-11-14 161218.png")
+![App Screenshot](images/Screenshot 2024-11-14 161218.png)
 
 # Hospital Recommendation Section
 <!-- C:\Users\Pc\Pictures\Screenshots\Screenshot 2024-11-14 160325.png  -->
