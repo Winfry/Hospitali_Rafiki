@@ -49,15 +49,12 @@ Enter your health information to get a kidney disease prediction.
 If at risk, receive recommendations for NHIF-friendly hospitals and dialysis centers nearby.
 Explore general health resources for managing or preventing kidney disease.
 Screenshots
-Prediction Section
 
+# Prediction Section
+<!-- "C:\Users\Pc\Pictures\Screenshots\Screenshot 2024-11-14 161218.png" -->
 
-
-
-
-
-Hospital Recommendation Section
-<!-- Replace with actual image path if available -->
+# Hospital Recommendation Section
+<!-- C:\Users\Pc\Pictures\Screenshots\Screenshot 2024-11-14 160325.png  -->
 
 Future Improvements
 Adding a search filter to narrow down results by NHIF services, county, or hospital type.
