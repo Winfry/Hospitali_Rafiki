@@ -22,7 +22,7 @@ except FileNotFoundError:
 # Title and description
 st.title("Chronic Kidney Disease Prediction and Hospital Recommendation System")
 st.write("Chronic kidney disease (CKD) is a long-term condition where the kidneys gradually lose function, impacting their ability to filter waste and excess fluids from the blood. Often caused by conditions like diabetes and high blood pressure, CKD progresses slowly and may not show symptoms until significant damage has occurred. Managing CKD early can slow its progression and help prevent complications, highlighting the importance of regular check-ups and a proactive approach to kidney health.")
-st.image("chronic-kidney-disease.jpg", caption="Understanding Diabetes", use_column_width=True)
+st.image("chronic-kidney-disease-.jpg", caption="Understanding Diabetes", use_column_width=True)
 
 
 # Collect input data for prediction
@@ -70,7 +70,28 @@ if st.button("Predict"):
                     - Add strength training exercises as well.
                 """)
         else:
-            st.success("GREAT!You are not likely to have diabetes according to this prediction.")
+            st.success("GREAT!You are not likely to have a Kidney disease according to this prediction.")
+            st.write("For additional support, consider visiting a healthcare provider for regular check-ups, even if no issues are detected. Keeping a proactive approach is key to long-term kidney health!")
+            # Display an educational image about diabetes
+            st.image("diab_info.jpg", caption="Understanding Chronic Kidney Disease", use_column_width=True)
+
+            
+            # Display diabetes management resources
+            st.header("Resources for Managing a Kidney Disease")
+            st.write("Here are some tips and resources to help you manage A chronic Kidney Disease:")
+            if st.checkbox("Diet and Nutrition Tips"):
+                st.write("""
+                    - Choose fiber-rich foods like vegetables, fruits, and whole grains.
+                    - Avoid sugary drinks and high-sugar foods.
+                    - Include lean proteins and healthy fats.
+                """)
+            
+            if st.checkbox("Exercise Recommendations"):
+                st.write("""
+                    - Aim for 150 minutes of moderate exercise per week.
+                    - Try walking, cycling, or low-impact activities.
+                    - Add strength training exercises as well.
+                """)
             
     except Exception as e:
         st.error(f"Error in prediction: {e}")
@@ -92,6 +113,8 @@ if not recommended_hospitals.empty:
         st.write("---")
 else:
     st.write("No hospitals found in the selected county.")
+    
+    
 
         
 
