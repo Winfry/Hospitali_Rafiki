@@ -149,7 +149,7 @@ if st.button("Predict"):
             hospitals_in_county = hospitals_df[hospitals_df['COUNTY'] == selected_county]
 
             if not hospitals_in_county.empty:
-                st.write("Hospitals in your area available for a general check-up:")
+                st.write("Hospitals in your area available for a general Kidney check-up:")
                 for _, row in hospitals_in_county.iterrows():
                     st.write(f"**{row['HOSPITAL_NAME']}**")
                     st.write(f"Location: {row['COUNTY']}")
