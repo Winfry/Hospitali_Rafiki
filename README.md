@@ -16,11 +16,11 @@ Hospital Data: Includes a dataset, cleaned_hospitals.csv, which stores details a
 Dataset
 The project uses a dataset with information about NHIF-friendly hospitals and dialysis centers, containing the following columns:
 
-COUNTY: The county where the hospital is located.
-NHIF_OFFICE: NHIF office associated with the hospital.
-NHIF_HOSPITAL_CODE: Hospital code as per NHIF records.
-HOSPITAL_NAME: Name of the hospital.
-Setup Instructions
+- COUNTY: The county where the hospital is located.
+- NHIF_OFFICE: NHIF office associated with the hospital.
+- NHIF_HOSPITAL_CODE: Hospital code as per NHIF records.
+- HOSPITAL_NAME: Name of the hospital.
+- Setup Instructions
 To set up and run this project locally:
 
 # Clone this repository:
