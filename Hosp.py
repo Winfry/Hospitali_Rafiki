@@ -21,7 +21,9 @@ except FileNotFoundError:
 
 # Title and description
 st.title("Diabetes Prediction and Hospital Recommendation System")
-st.write("Provide your health information for a quick diabetes risk assessment, along with hospital recommendations.")
+st.write("Provide your health information for a quick diabetes risk assessment, along with hospital recommendations.Get a quick prediction and learn ways to improve your health! Diabetes is a chronic health condition that affects how the body processes blood sugar (glucose). When unmanaged, high blood sugar levels can lead to severe complications over time, impacting various organs and systems in the body, including the heart, blood vessels, nerves, eyes, and kidneys.By focusing on kidney health in our diabetes prediction and hospital recommendation system, we aim to support early intervention and provide valuable resources for those at risk, helping to prevent severe kidney-related issues.")
+st.image("diabetes.jpg", caption="Understanding Diabetes", use_column_width=True)
+
 
 # Collect input data for prediction
 st.header("Please Enter Your Health Information")
