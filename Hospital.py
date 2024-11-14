@@ -90,10 +90,15 @@ if st.button("Predict"):
                 st.error("Hospital data file not found. Please ensure 'hospitals.csv' is in the directory.")
                 st.stop()
 
+            # Title and description
+            st.title("Hospital Recommendation System")
+            st.write("Select your preferred county to find recommended hospitals in your area.")
             
+            # Select county
             selected_county = st.selectbox("Select Your County", hospitals_df['COUNTY'].unique())
-            recommended_hospitals = hospitals_df[(hospitals_df['COUNTY'] == selected_county) & 
-                                                (hospitals_df['SPECIALTY'] == "Diabetes")]
+            
+            # Filter hospitals by selected county
+            recommended_hospitals = hospitals_df[(hospitals_df['COUNTY'] == selected_county)]
 
             if not recommended_hospitals.empty:
                 st.write("Hospitals in your area specializing in diabetes care:")
