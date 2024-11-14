@@ -54,7 +54,7 @@ Screenshots
 ![WebApp Screenshot](https://github.com/Winfry/Hospitali_Rafiki/blob/main/Screenshot%202024-11-14%20161218.png?raw=true?)
 
 # Hospital Recommendation Section
-<!-- C:\Users\Pc\Pictures\Screenshots\Screenshot 2024-11-14 160325.png  -->
+![WebApp Screenshot](https://github.com/Winfry/Hospitali_Rafiki/blob/main/Screenshot%202024-11-14%20160325.png?raw=true)
 
 Future Improvements
 Adding a search filter to narrow down results by NHIF services, county, or hospital type.
