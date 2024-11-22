@@ -318,3 +318,5 @@ yarl==1.9.4
 ydata-profiling==4.9.0
 zipp==3.17.0
 zstandard==0.22.0
+pandas-profiling==3.2.0
+visions==0.7.4
