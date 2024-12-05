@@ -78,8 +78,8 @@ if st.button("Predict"):
 
 # Hospital Recommendation Section
 st.header("Hospital Recommendation")
-county_location = st.selectbox("Select Your Location", df_hospitals['COUNTY'].unique())
-hospital_code = st.selectbox("Select NHIF Hospital Code ", df_hospitals['NHIF_HOSPITAL_CODE'].unique())
+county_location = st.selectbox("Select Your Location", hospitals_df['COUNTY'].unique())
+hospital_code = st.selectbox("Select NHIF Hospital Code ", hospitals_df['NHIF_HOSPITAL_CODE'].unique())
 
 # Function to recommend hospitals
 def recommend_hospitals(COUNTY, NHIF_HOSPITAL_CODE):
