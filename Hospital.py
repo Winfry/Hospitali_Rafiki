@@ -83,9 +83,9 @@ hospital_code = st.selectbox("Select NHIF Hospital Code ", hospitals_df['NHIF_HO
 
 # Function to recommend hospitals
 def recommend_hospitals(COUNTY, NHIF_HOSPITAL_CODE):
-    filtered_hospitals = df_hospitals[
-        (df_hospitals['COUNTY'] == county_location) &
-        (df_hospitals['NHIF_HOSPITAL_CODE'] == hospital_code)
+    filtered_hospitals = hospitals_df[
+        (hospitals_df['COUNTY'] == county_location) &
+        (hospitals_df['NHIF_HOSPITAL_CODE'] == hospital_code)
     ]
     
     if filtered_hospitals.empty:
