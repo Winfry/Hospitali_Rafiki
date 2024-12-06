@@ -162,7 +162,6 @@ opt-einsum==3.3.0
 package_name==0.1
 packaging==23.2
 pandas==2.2.3
-pandas-profiling==3.2.0
 panel==1.5.3
 param==2.1.1
 parso==0.8.3
@@ -318,5 +317,5 @@ yarl==1.9.4
 ydata-profiling==4.9.0
 zipp==3.17.0
 zstandard==0.22.0
-pandas-profiling==3.2.0
+
 
