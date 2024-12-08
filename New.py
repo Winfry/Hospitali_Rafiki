@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 
 # Load the dataset (replace 'hospitals.csv' with your extracted CSV file)
-@st.cache
 def load_data():
     data = pd.read_csv("cleaned_hospitals.csv")
     return data
